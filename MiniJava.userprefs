@@ -1,0 +1,44 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MiniJava/Ast/AST.cs">
+    <Files>
+      <File FileName="MiniJava/Program.cs" Line="1" Column="1" />
+      <File FileName="MiniJava/Lexer/Lexer.cs" Line="22" Column="30" />
+      <File FileName="MiniJava/Errors/Error.cs" Line="18" Column="23" />
+      <File FileName="MiniJava/Lexer/Lexeme.cs" Line="26" Column="9" />
+      <File FileName="MiniJava/UnitTests/LexerTests/LexSimple.cs" Line="17" Column="10" />
+      <File FileName="MiniJava/Ast/AST.cs" Line="11" Column="24" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="MiniJava" expanded="True">
+            <Node name="Ast" selected="True" />
+            <Node name="UnitTests" expanded="True">
+              <Node name="LexerTests" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True">
+          <Node name="MiniJava" expanded="True">
+            <Node name="MiniJava" expanded="True">
+              <Node name="LexerTests" expanded="True" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
