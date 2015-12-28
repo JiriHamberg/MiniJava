@@ -17,7 +17,7 @@ namespace MiniJava
 			{"{", LexemeCategory.LCurlyBracket},
 			{"}", LexemeCategory.RCurlyBracket},
 			{".", LexemeCategory.Dot},
-			{",", LexemeCategory.Colon},
+			{",", LexemeCategory.Comma},
 			{";", LexemeCategory.Semicolon},
 			{"+", LexemeCategory.ADD},
 			{"-", LexemeCategory.SUB},
@@ -60,6 +60,8 @@ namespace MiniJava
 			{"System", LexemeCategory.System},
 			{"out", LexemeCategory.Out},
 			{"println", LexemeCategory.Println},
+			{"||", LexemeCategory.OR},
+			{"&&", LexemeCategory.AND}
 		};
 
 		//list of transitions in order of presedence
@@ -155,13 +157,35 @@ namespace MiniJava
 					() => 
 						{
 							if (PeekChar () == '=') {
-								NextChar();
+								lexemeBody += NextChar();
 								category = LexemeCategory.EQ;
 							} else {
 								category = LexemeCategory.Assignment;
 							}
 						}	
-				)
+				),
+	
+				Transition(
+					c => c == '|',
+					() => {
+						//NextChar();
+						if(PeekChar() == '|') {
+							lexemeBody += NextChar();
+							category = LexemeCategory.OR;
+						}
+					}
+				),
+				Transition(
+					c => c == '&',
+					() => {
+						//NextChar();
+						if(PeekChar() == '&') {
+							lexemeBody += NextChar();
+							category = LexemeCategory.AND;
+						}
+					}
+				),
+				
 
 			};
 
@@ -214,12 +238,12 @@ namespace MiniJava
 			SkipBlank();
 			DecideCategory(); 
 
-			/*Token token = new Token ();
-			token.Lexeme = lexeme;
-			token.Category = category;
-			token.Line = lexemeBeginLine;
-			token.Column = lexemeBeginColumn;
-			return token;*/
+			/*switch (category) {
+			case LexemeCategory.Identifier:
+				return new Identifier (lexemeBody, lexemeBeginLine, lexemeBeginColumn);
+			default:
+				return new Lexeme (category, lexemeBody, lexemeBeginLine, lexemeBeginColumn);
+			}*/
 			return new Lexeme (category, lexemeBody, lexemeBeginLine, lexemeBeginColumn);
 		}
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{292C8108-898E-4DA2-AB6E-C12B7A3B1EB3}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -43,6 +43,10 @@
     <Compile Include="UnitTests\TestHelper.cs" />
     <Compile Include="UnitTests\LexerTests\LexSimple.cs" />
     <Compile Include="Ast\AST.cs" />
+    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="UnitTests\ParserTests\EmptyClass.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Parser\Precedence.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -51,5 +55,8 @@
     <Folder Include="UnitTests\" />
     <Folder Include="UnitTests\LexerTests\" />
     <Folder Include="Ast\" />
+    <Folder Include="Parser\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="UnitTests\ParserTests\" />
   </ItemGroup>
 </Project>

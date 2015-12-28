@@ -34,13 +34,18 @@ namespace MiniJava
 		}
 	}
 
-	//public class ParseError : Error
-	//{
-	//}
+	public class ParseError : Error
+	{
+		public ParseError(string message, int Line, int Column) : base(message, Line, Column)
+		{
+		}
+	}
 
 	//public class SemanticError : Error 
 	//{
 	//}
+
+	//public class ErrorContainer : 
 
 }
 

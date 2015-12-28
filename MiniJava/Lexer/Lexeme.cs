@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MiniJava
 {
@@ -60,7 +62,7 @@ namespace MiniJava
 		RSquareBracket,
 		LCurlyBracket,
 		RCurlyBracket,
-		Colon,
+		Comma,
 		Semicolon,
 		Dot,
 
@@ -85,6 +87,45 @@ namespace MiniJava
 			this.Line = line;
 			this.Column = column;
 		}
+
+		public static ISet<LexemeCategory> LeftBrackets = new HashSet<LexemeCategory>() {
+			LexemeCategory.LBracket, LexemeCategory.LSquareBracket, LexemeCategory.LCurlyBracket
+		};
+		public static ISet<LexemeCategory> RightBrackets = new HashSet<LexemeCategory>() {
+			LexemeCategory.RBracket, LexemeCategory.RSquareBracket, LexemeCategory.RCurlyBracket
+		};
+		public static ISet<LexemeCategory> BinaryOp = new HashSet<LexemeCategory>() {
+			LexemeCategory.ADD,
+			LexemeCategory.SUB,
+			LexemeCategory.MUL,
+			LexemeCategory.DIV,
+			LexemeCategory.MOD,
+			LexemeCategory.AND,
+			LexemeCategory.OR,
+			LexemeCategory.EQ,
+			LexemeCategory.LT,
+			LexemeCategory.GT
+		};
+
+		public static ISet<LexemeCategory> UnaryOp = new HashSet<LexemeCategory>() {
+			LexemeCategory.NOT
+		};
+		public static ISet<LexemeCategory> ExpressionFirstSet = UnaryOp.Union(new HashSet<LexemeCategory>() {
+			LexemeCategory.LBracket, LexemeCategory.This, LexemeCategory.LiteralBoolean, LexemeCategory.LiteralInt, LexemeCategory.Identifier 
+		}).ToHashSet();
+
 	}
+
+
+	/*public class Identifier : Lexeme {
+
+		public Identifier(string body, int line, int column) : base(LexemeCategory.Identifier, body, line, column) 
+		{
+		}
+
+	}*/
+
+
+
 }
 
