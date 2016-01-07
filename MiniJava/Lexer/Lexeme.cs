@@ -111,7 +111,8 @@ namespace MiniJava
 			LexemeCategory.NOT
 		};
 		public static ISet<LexemeCategory> ExpressionFirstSet = UnaryOp.Union(new HashSet<LexemeCategory>() {
-			LexemeCategory.LBracket, LexemeCategory.This, LexemeCategory.LiteralBoolean, LexemeCategory.LiteralInt, LexemeCategory.Identifier 
+			LexemeCategory.LBracket, LexemeCategory.This, LexemeCategory.LiteralBoolean, 
+			LexemeCategory.LiteralInt, LexemeCategory.Identifier, LexemeCategory.New 
 		}).ToHashSet();
 
 	}

@@ -13,6 +13,7 @@ namespace MiniJava
 
 		public abstract void prettyPrint (StringBuilder s);
 	}
+		
 
 	public class ReturnType : AST 
 	{
@@ -71,6 +72,68 @@ namespace MiniJava
 	}
 
 
+	public class Program : AST 
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = new HashSet<LexemeCategory>() {
+			LexemeCategory.Class 
+		};
+		public static readonly ISet<LexemeCategory> FollowSet = new HashSet<LexemeCategory>() {};
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public readonly MainClassDeclaration mainClass;
+		public readonly IList<ClassDeclaration> classes;
+
+		public Program(MainClassDeclaration mainClass, IList<ClassDeclaration> classes)
+		{
+			this.mainClass = mainClass;
+			this.classes = classes;
+		}
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			mainClass.prettyPrint (s);
+			s.Append("\n");
+			foreach (var c in classes) {
+				c.prettyPrint (s);
+				s.Append("\n");
+			}
+		}
+
+	}
+
+	public class MainClassDeclaration : AST 
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = new HashSet<LexemeCategory>() {
+			LexemeCategory.Class 
+		};
+		public static readonly ISet<LexemeCategory> FollowSet = new HashSet<LexemeCategory>() {
+			LexemeCategory.Class	
+		};
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public readonly Identifier className;
+		public readonly MethodDeclaration main;
+
+		public MainClassDeclaration(Identifier className, MethodDeclaration main) 
+		{
+			this.className = className;
+			this.main = main;
+		}
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			s.Append ("class "); 
+			className.prettyPrint (s);
+			s.Append("\n");
+			main.prettyPrint (s);
+			s.Append("\n");
+		}
+	}
+
 	public class ClassDeclaration : AST
 	{
 
@@ -85,21 +148,21 @@ namespace MiniJava
 		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
 
 		public readonly Identifier className;
-		public readonly IList<Statement> statements;
 		public readonly IList<VariableDeclaration> variables;
 		public readonly IList<MethodDeclaration> methods;
 
 
-		public ClassDeclaration(Identifier className, IList<Statement> statements, Identifier parentClass, IList<VariableDeclaration> variables, IList<MethodDeclaration> methods) {
+		public ClassDeclaration(Identifier className,  Identifier parentClass, IList<VariableDeclaration> variables, IList<MethodDeclaration> methods) {
 			this.className = className;
-			this.statements = statements;
 			this.variables = variables;
 			this.methods = methods;
 		}
 
 		public override void prettyPrint(StringBuilder s)
 		{
-			s.AppendFormat ("class {0}", className); 
+			s.Append ("class "); 
+			className.prettyPrint (s);
+			s.Append("\n");
 			foreach (var v in variables) {
 				//s.Append ("\t");
 				v.prettyPrint (s);
@@ -149,6 +212,30 @@ namespace MiniJava
 
 	}
 
+	public class PrintStatement : Statement 
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = new HashSet<LexemeCategory>() {LexemeCategory.System};
+		public static readonly ISet<LexemeCategory> FollowSet = new HashSet<LexemeCategory>() {
+			//STATEMENT FOLLOW SET	
+		};
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public readonly Expression toPrint;
+
+		public PrintStatement(Expression toPrint) 
+		{
+			this.toPrint = toPrint;
+		}
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			s.Append ("println( ");
+			toPrint.prettyPrint (s);
+			s.Append (" )");
+		}
+	}
 
 	public class AssertStatement : Statement
 	{
@@ -227,7 +314,57 @@ namespace MiniJava
 			s.Append (" ");
 			identifier.prettyPrint (s);
 		}
-	} 
+	}
+
+	public class Assignment : Statement 
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = Lexeme.ExpressionFirstSet;
+		public static readonly ISet<LexemeCategory> FollowSet = new HashSet<LexemeCategory>() {
+			//STATEMENT FOLLOW SET	
+		};
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public readonly Expression lvalue;
+		public readonly Expression rvalue;
+
+		public Assignment(Expression lvalue, Expression rvalue)
+		{
+			this.lvalue = lvalue;
+			this.rvalue = rvalue;
+		}
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			lvalue.prettyPrint (s);
+			s.Append (" <- ");
+			rvalue.prettyPrint (s);
+		}
+	}
+
+	public class MethodInvocationStatement : Statement
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = Lexeme.ExpressionFirstSet;
+		public static readonly ISet<LexemeCategory> FollowSet = new HashSet<LexemeCategory>() {
+			//STATEMENT FOLLOW SET	
+		};
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public readonly MethodInvocation invocation;
+
+		public MethodInvocationStatement(MethodInvocation invocation)
+		{
+			this.invocation = invocation;
+		}
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			invocation.prettyPrint (s);
+		}
+	}
 
 	public class Variable : AST 
 	{
@@ -569,6 +706,20 @@ namespace MiniJava
 		public override void prettyPrint(StringBuilder s)
 		{
 			s.AppendFormat("L({0})",literal.Body);
+		}
+	}
+
+	public class This : Leaf
+	{
+		public static readonly ISet<LexemeCategory> FirstSet = BinaryOp.FirstSet;
+		public static readonly ISet<LexemeCategory> FollowSet = BinaryOp.FollowSet;
+
+		public override ISet<LexemeCategory> First { get { return FirstSet; } }
+		public override ISet<LexemeCategory> Follow { get { return FollowSet; } }
+
+		public override void prettyPrint(StringBuilder s)
+		{
+			s.Append ("this");
 		}
 	}
 
