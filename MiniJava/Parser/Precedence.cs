@@ -8,16 +8,20 @@ namespace MiniJava
 		
 		static Dictionary<LexemeCategory, int> operPrecedence = new Dictionary<LexemeCategory, int>() 
 		{
-			{LexemeCategory.ADD, 5},
-			{LexemeCategory.MUL, 10},
-			{LexemeCategory.SUB, 5},
-			{LexemeCategory.MOD, 10},
-			{LexemeCategory.AND, 2},
-			{LexemeCategory.OR, 2},
-			{LexemeCategory.DIV, 9},
-			{LexemeCategory.EQ, 1},
-			{LexemeCategory.GT, 1},
-			{LexemeCategory.LT, 1}
+			{LexemeCategory.MUL, 12},
+			{LexemeCategory.DIV, 12},
+			{LexemeCategory.MOD, 12},
+
+			{LexemeCategory.ADD, 11},
+			{LexemeCategory.SUB, 11},
+
+			{LexemeCategory.GT, 9},
+			{LexemeCategory.LT, 9},
+
+			{LexemeCategory.EQ, 8},
+
+			{LexemeCategory.AND, 4},
+			{LexemeCategory.OR, 3}
 		};
 
 		public static int GetPrecedence(LexemeCategory oper)
